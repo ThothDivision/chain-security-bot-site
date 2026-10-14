@@ -1,0 +1,24 @@
+name: Early access request
+description: Ask to try Chain Security Bot on your chain or contracts (this issue is public).
+title: "Early access request"
+labels: ["waitlist"]
+body:
+  - type: markdown
+    attributes:
+      value: "Issues here are **public**. Do not include vulnerability details, secrets or anything you would not post publicly. Leave fields blank if you prefer; we will see your GitHub handle."
+  - type: input
+    id: chain
+    attributes:
+      label: Chain or project (optional)
+  - type: dropdown
+    id: interest
+    attributes:
+      label: Interested in
+      multiple: true
+      options: ["Contract scanning (CosmWasm)", "Contract scanning (Solidity)", "Chain monitoring / alerts", "Design partnership"]
+  - type: dropdown
+    id: alerts
+    attributes:
+      label: Preferred alert channel (optional)
+      multiple: true
+      options: ["Discord", "Telegram", "Slack", "Webhook", "Email"]

@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chain Security Bot — nothing gets minted from thin air</title>
+<meta name="description" content="Early preview: a scanner for CosmWasm and Solidity contracts plus a bot that watches Cosmos and EVM chains for supply that appears out of nowhere.">
+<meta property="og:title" content="Chain Security Bot — nothing gets minted from thin air">
+<meta property="og:description" content="Contract scanner + chain invariant monitor for Cosmos (CosmWasm, IBC) and EVM. Early preview.">
+<meta name="theme-color" content="#f2efe6">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/inter-tight.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap top__in">
+    <a class="mark" href="#top" aria-label="Chain Security Bot, home">
+      <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><path d="M2 26 L14 24 L15 4 L16 23 L30 21" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="miter"/></svg>
+      <span class="mark__name">Chain Security Bot</span>
+    </a>
+    <nav aria-label="Sections" class="nav">
+      <a href="#how">How it works</a>
+      <a href="#detectors">Detectors</a>
+      <a href="#demo">Demo</a>
+      <a href="#monitor">Monitoring</a>
+      <a href="#roadmap">Roadmap</a>
+    </nav>
+    <a class="btn btn--small" href="#waitlist">Request access</a>
+  </div>
+</header>
+
+<main id="main">
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="wrap hero__in">
+    <div class="hero__copy">
+      <p class="eyebrow"><span class="tag tag--live">Early preview</span> CosmWasm · IBC · EVM</p>
+      <h1 id="hero-title">Tokens don’t come from <em>thin&nbsp;air</em>.</h1>
+      <p class="lede">csb checks that on every block. It scans contracts for unauthorised mint paths before you deploy, then watches the chain for supply that issuance can’t explain.</p>
+      <div class="cta">
+        <a class="btn" href="#demo">See real output</a>
+        <a class="btn btn--ghost" href="#waitlist">Request access</a>
+      </div>
+    </div>
+    <figure class="chart" aria-labelledby="chart-cap">
+      <div class="chart__plot">
+    <svg class="chart__svg" viewBox="0 0 600 380" role="img" aria-labelledby="chart-title chart-desc">
+      <title id="chart-title">Cosmos Hub ATOM supply, 8 to 14 October 2026, with a hypothetical mint for scale</title>
+      <desc id="chart-desc">The real supply rises steadily from about 534.9 million to 536.1 million ATOM over six days. A dashed red line shows a hypothetical one-million-ATOM mint in a single block, which jumps the line by about as much as the whole week of normal issuance.</desc>
+      <g class="chart__grid"><line x1="64" x2="584" y1="283.3" y2="283.3"/><line x1="64" x2="584" y1="230.7" y2="230.7"/><line x1="64" x2="584" y1="178.0" y2="178.0"/><line x1="64" x2="584" y1="125.3" y2="125.3"/><line x1="64" x2="584" y1="72.7" y2="72.7"/></g>
+      <g class="chart__axis"><text x="56" y="287.3" text-anchor="end">535.0M</text><text x="56" y="234.7" text-anchor="end">535.5M</text><text x="56" y="182.0" text-anchor="end">536.0M</text><text x="56" y="129.3" text-anchor="end">536.5M</text><text x="56" y="76.7" text-anchor="end">537.0M</text><line class="tick" x1="116.5" x2="116.5" y1="336" y2="341"/><text x="116.5" y="356" text-anchor="middle">9 Oct</text><line class="tick" x1="198.7" x2="198.7" y1="336" y2="341"/><text x="198.7" y="356" text-anchor="middle" class="tick-alt">10 Oct</text><line class="tick" x1="280.9" x2="280.9" y1="336" y2="341"/><text x="280.9" y="356" text-anchor="middle">11 Oct</text><line class="tick" x1="363.0" x2="363.0" y1="336" y2="341"/><text x="363.0" y="356" text-anchor="middle" class="tick-alt">12 Oct</text><line class="tick" x1="445.2" x2="445.2" y1="336" y2="341"/><text x="445.2" y="356" text-anchor="middle">13 Oct</text><line class="tick" x1="527.3" x2="527.3" y1="336" y2="341"/><text x="527.3" y="356" text-anchor="middle" class="tick-alt">14 Oct</text><text x="56" y="14" text-anchor="end" class="unit">ATOM</text></g>
+      <line class="chart__base" x1="64" x2="584" y1="336" y2="336"/>
+      <path class="chart__hyp" d="M497.4,191.6 L497.4,86.3 L497.4,86.3 L508.3,83.7 L519.1,81.1 L529.9,78.5 L540.7,76.0 L551.5,73.4 L562.4,70.8 L573.2,68.2 L584.0,65.6" pathLength="1"/>
+      <path class="chart__real" d="M64.0,295.1 L74.8,292.5 L85.7,289.9 L96.5,287.3 L107.4,284.8 L118.2,282.2 L129.1,279.6 L140.0,277.0 L150.8,274.4 L161.7,271.8 L172.6,269.3 L183.4,266.7 L194.2,264.1 L205.1,261.5 L215.9,258.9 L226.7,256.3 L237.5,253.7 L248.3,251.2 L259.2,248.6 L270.0,246.0 L280.9,243.4 L291.7,240.8 L302.6,238.2 L313.4,235.6 L324.2,233.1 L335.0,230.5 L345.9,227.9 L356.7,225.3 L367.5,222.7 L378.3,220.1 L389.2,217.5 L400.0,214.9 L410.8,212.4 L421.7,209.8 L432.5,207.2 L443.3,204.6 L454.2,202.0 L465.0,199.4 L475.8,196.8 L486.6,194.2 L497.4,191.6 L508.3,189.1 L519.1,186.5 L529.9,183.9 L540.7,181.3 L551.5,178.7 L562.4,176.1 L573.2,173.5 L584.0,170.9" pathLength="1"/>
+      <text class="chart__steplabel" x="489.4" y="131.6" text-anchor="end">hypothetical</text>
+      <circle class="chart__dot" cx="497.4" cy="191.6" r="4"/>
+    </svg>
+        <div class="chart__callout" style="--x:82.91%;--y:22.71%">
+          <span class="chart__callout-head"><span class="tag tag--hyp">hypothetical</span> <span class="sev sev--critical">critical</span></span>
+          <span class="mono">supply_jump · +1,000,000 ATOM in 1 block</span>
+          <span class="mono chart__callout-sub">policy allows ≈153 ATOM per 30 s</span>
+        </div>
+      </div>
+      <figcaption id="chart-cap" class="chart__cap">
+        <span class="key key--real" aria-hidden="true"></span><b>Real:</b> Cosmos Hub supply at every 2,000th block, 8–14 Oct 2026. It grew by 1,178,769 ATOM in 6.3 days. Read-only queries to a public LCD.
+        <br><span class="key key--hyp" aria-hidden="true"></span><b>Hypothetical:</b> a 1,000,000 ATOM mint in one block (≈0.19% of supply), shown for scale. Linear y-axis from 534.5M; both lines on the same scale.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="band band--ink" aria-labelledby="why-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="kicker mono">01 — Why</p>
+      <h2 id="why-title">“Minted from thin air” keeps happening.</h2>
+      <p class="sec-lede">These are real, public incidents and disclosures in the Cosmos ecosystem. Some were exploited, some were caught first. Each one broke an invariant that software could have watched.</p>
+    </div>
+    <ol class="incidents">
+      <li><time datetime="2026-08">Aug 2026</time><b>Cosmos EVM, 6 chains</b><span>StateDB / x/bank balance desync. About $5.7M drained. Total supply did not change, so supply-only monitors missed it.</span><a href="https://github.com/cosmos/security/blob/main/communications/cosmos_evm_GHSA-7g4w-cg88-2cq2_post_mortem.md" rel="noopener">post-mortem ↗</a></li>
+      <li><time datetime="2026-01">Jan 2026</time><b>SagaEVM</b><span>Chain paused after about $7M of bridged assets left. Root cause not officially published yet.</span><a href="https://crypto.news/saga-evm-chain-paused-after-7m-contract-exploit-2026/" rel="noopener">report ↗</a></li>
+      <li><time datetime="2024-08">Aug 2024</time><b>Noble CCTP</b><span>A USDC mint path checked signatures but not the sender. Disclosed and fixed, not exploited.</span><a href="https://github.com/asymmetric-research/security-advisories/blob/main/advisories/2024-08-27_circle_noble-cctp-mint-bug.md" rel="noopener">advisory ↗</a></li>
+      <li><time datetime="2024-04">Apr 2024</time><b>ibc-go</b><span>Re-entrancy in timeout handling could mint unlimited IBC tokens. Disclosed, not exploited.</span><a href="https://github.com/asymmetric-research/security-advisories/blob/main/advisories/2024-04-16_cosmos_ibc-reentrancy-infinite-mint.md" rel="noopener">advisory ↗</a></li>
+      <li><time datetime="2022-10">Oct 2022</time><b>BNB Token Hub</b><span>A forged IAVL proof minted 2M BNB (about $586M). About $127M left the chain before the halt.</span><a href="https://rekt.news/bnb-bridge-rekt/" rel="noopener">rekt ↗</a></li>
+      <li><time datetime="2022-10">Oct 2022</time><b>Dragonberry (ICS-23)</b><span>A proof bug on every IBC chain could have drained ICS-20 escrows. Patched before exploitation.</span><a href="https://forum.cosmos.network/t/ibc-security-advisory-dragonberry/7702" rel="noopener">advisory ↗</a></li>
+    </ol>
+  </div>
+</section>
+
+<section class="band" id="how" aria-labelledby="how-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="kicker mono">02 — How it works</p>
+      <h2 id="how-title">Check the code before it ships. Watch the chain after.</h2>
+    </div>
+    <ol class="steps">
+      <li><span class="steps__n mono">A</span><h3>Scan</h3><p><code>csb scan</code> takes a path or git URL. It parses CosmWasm crates and follows each execute path. It flags mint, transfer and admin effects that nothing authorises. It writes SARIF for GitHub code scanning and a Markdown report for humans.</p></li>
+      <li><span class="steps__n mono">B</span><h3>Watch</h3><p><code>csb watch</code> keeps a baseline of what the chain is allowed to do, such as issuance from x/mint inflation. It polls public LCD/RPC endpoints and compares every new reading against that baseline.</p></li>
+      <li><span class="steps__n mono">C</span><h3>Alert</h3><p>When an invariant breaks, csb sends the numbers to Discord, Telegram, Slack or any webhook: what changed, by how much, at which height, and what the policy allowed.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="band band--rule" id="detectors" aria-labelledby="det-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="kicker mono">03 — Detectors</p>
+      <h2 id="det-title">12 CosmWasm rules today. Solidity through proven open-source engines.</h2>
+      <p class="sec-lede">These are heuristic rules that run on the syntax tree, and every finding needs a human to review it. On CosmWasm/cw-plus (87 files), csb reports 0 critical and 0 high findings, plus 4 medium/low unbounded-iteration notes.</p>
+    </div>
+    <div class="table-scroll" role="region" aria-label="Detector list" tabindex="0">
+    <table class="det">
+      <thead><tr><th scope="col">Rule</th><th scope="col">Severity</th><th scope="col">Catches</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">CW001</td><td><span class="sev sev--critical">critical</span></td><td>A mint or supply change on an execute path with no minter/owner check</td></tr>
+        <tr><td class="mono">CW002</td><td><span class="sev sev--critical">critical</span></td><td>Config, owner or admin writes, or <code>WasmMsg::UpdateAdmin</code>, with no sender check</td></tr>
+        <tr><td class="mono">CW003</td><td><span class="sev sev--high">high</span></td><td>Bank or CW20 transfers with no check and no debit from the sender's own balance</td></tr>
+        <tr><td class="mono">CW004</td><td><span class="sev sev--high">high</span></td><td><code>info.funds</code> is credited without checking the denom (fake-denom deposits)</td></tr>
+        <tr><td class="mono">CW005</td><td><span class="sev sev--high">high</span></td><td><code>ibc_packet_receive</code> mints without checking which channel or port the packet came from</td></tr>
+        <tr><td class="mono">CW011</td><td><span class="sev sev--high">high</span></td><td>The release profile is built without <code>overflow-checks = true</code></td></tr>
+        <tr><td class="mono">CW006–008</td><td><span class="sev sev--medium">medium</span></td><td>The reply handler ignores the submessage id or trusts raw event attributes; migrate never checks the cw2 version</td></tr>
+        <tr><td class="mono">CW009–010</td><td><span class="sev sev--medium">medium</span></td><td>Storage iteration without a limit on state-changing paths; raw <code>u128</code> arithmetic on amounts</td></tr>
+        <tr><td class="mono">CW012</td><td><span class="sev sev--low">low</span></td><td>Queries without pagination</td></tr>
+        <tr><td class="mono">EVM</td><td><span class="tag">adapter</span></td><td>Runs Slither, Aderyn and Semgrep (your choice of rules) as external tools and merges their results into the same SARIF</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<section class="band band--ink" id="demo" aria-labelledby="demo-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="kicker mono">04 — Live demo</p>
+      <h2 id="demo-title">Real output, not a mock-up.</h2>
+      <p class="sec-lede">On the left, csb 0.1.0 scans the deliberately vulnerable vault fixture from our test suite. On the right, a read-only watch run against public Cosmos Hub endpoints on 14 Oct 2026.</p>
+    </div>
+    <div class="demo">
+      <figure class="term">
+        <figcaption class="term__bar mono"><span>csb scan tests/fixtures/cosmwasm/vulnerable</span></figcaption>
+<pre class="term__body mono"><span class="t-dim">csb: scanned 4 files (cosmwasm); 13 findings</span>
+<span class="t-crit">critical</span> CW001 src/contract.rs:26  execute_mint
+         mints without checking info.sender
+<span class="t-crit">critical</span> CW002 src/contract.rs:55  execute_update_config
+<span class="t-high">high    </span> CW004 src/contract.rs:35  execute_deposit
+         credits info.funds without a denom check
+<span class="t-high">high    </span> CW003 src/contract.rs:47  execute_withdraw
+<span class="t-high">high    </span> CW005 src/contract.rs:100 ibc_packet_receive
+<span class="t-high">high    </span> CW011 Cargo.toml:16        overflow-checks off
+<span class="t-med">medium  </span> CW006 src/contract.rs:73  reply ignores msg.id
+<span class="t-dim">… 6 more · fixed twin of the same contract: 0 findings</span></pre>
+      </figure>
+      <figure class="term">
+        <figcaption class="term__bar mono"><span>csb watch supply --denom uatom</span></figcaption>
+<pre class="term__body mono"><span class="t-dim">issuance model: x/mint inflation 0.1000/yr ×3.0</span>
+height   33409550  536,086,174,450,675 uatom  <span class="t-ok">ok</span>
+height   33409551  536,086,186,746,229 uatom  <span class="t-ok">ok</span>
+height   33409553  536,086,211,337,338 uatom  <span class="t-ok">ok</span>
+<span class="t-dim">Δ per ~10 s ≈ 12–25 ATOM; allowed ≈ 51 ATOM</span>
+
+<span class="t-dim"># what an alert looks like (test suite)</span>
+<span class="t-crit">[CRITICAL] supply_jump</span> +1,000,000 ATOM in 30 s
+(0.19% of supply) · policy allows ≈153 ATOM
+→ stdout, webhook, Discord, Slack, Telegram</pre>
+      </figure>
+    </div>
+    <details class="diff">
+      <summary>Show the one-line fix for CW001</summary>
+<pre class="mono"><span class="d-del">- pub fn execute_mint(deps: DepsMut, _info: MessageInfo, …) {</span>
+<span class="d-add">+ pub fn execute_mint(deps: DepsMut, info: MessageInfo, …) {</span>
+<span class="d-add">+     let cfg = CONFIG.load(deps.storage)?;</span>
+<span class="d-add">+     if info.sender != cfg.minter { return Err(unauthorized()); }</span>
+      let mut token = TOKEN_INFO.load(deps.storage)?;
+<span class="d-del">-     token.total_supply = token.total_supply + amount;</span>
+<span class="d-add">+     token.total_supply = token.total_supply.checked_add(amount)?;</span></pre>
+    </details>
+  </div>
+</section>
+
+<section class="band" id="monitor" aria-labelledby="mon-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="kicker mono">05 — Monitoring</p>
+      <h2 id="mon-title">Invariants, not dashboards.</h2>
+      <p class="sec-lede">An exploit usually shows up somewhere as a number that should not be possible. csb writes each of those down as an invariant and checks it on every block or poll.</p>
+    </div>
+    <ul class="inv">
+      <li><span class="tag tag--live">works today</span><h3>Total supply vs issuance</h3><p>Uses the x/mint inflation rate or your own ceiling. Catches step jumps and slow drips against the baseline, and ignores lagging nodes.</p></li>
+      <li><span class="tag">planned · wk 3</span><h3>Mints from unexpected authorities</h3><p>Watches mint events over CometBFT websockets and compares the minter to an allow-list of modules and accounts.</p></li>
+      <li><span class="tag">planned · wk 4</span><h3>IBC escrow = counterparty supply</h3><p>For each channel, escrowed native tokens must equal the voucher supply on the other chain.</p></li>
+      <li><span class="tag">planned · wk 4</span><h3>Account balance ≤ total supply</h3><p>Catches wrap-around balances, as in the 2026 Cosmos EVM exploit, where total supply stayed flat.</p></li>
+      <li><span class="tag">planned · wk 5</span><h3>Bridge outflow budgets</h3><p>Flags large outflows with no explanation and flows that exceed a rate limit, per route.</p></li>
+      <li><span class="tag">planned · wk 5</span><h3>Code &amp; admin changes</h3><p>Watches for contract migrations, admin changes and new code IDs on contracts you care about.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section class="band band--rule" id="roadmap" aria-labelledby="road-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="kicker mono">06 — Roadmap</p>
+      <h2 id="road-title">Where the preview goes next.</h2>
+    </div>
+    <ol class="road">
+      <li class="is-done"><b class="mono">Now</b><p>CLI <code>csb scan</code> with 12 CosmWasm rules, SARIF + Markdown output and Solidity adapters. <code>csb watch supply</code> with webhook alerts. CI runs the test suite.</p></li>
+      <li><b class="mono">Weeks 2–3</b><p>Call graphs that span files and work through traits, cw-multi-test proofs-of-concept for each finding, and a mint-event stream over CometBFT websockets.</p></li>
+      <li><b class="mono">Weeks 4–5</b><p>IBC escrow invariants, a check that no account holds more than total supply, bridge budgets and alerts on admin or migration changes.</p></li>
+      <li><b class="mono">Weeks 6–8</b><p>A hosted dashboard, per-chain policies, a GitHub App for pull-request scanning and the first design partners.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="band band--signal" id="waitlist" aria-labelledby="wait-title">
+  <div class="wrap wait">
+    <div>
+      <p class="kicker mono">07 — Early access</p>
+      <h2 id="wait-title">Run it on your chain first.</h2>
+      <p>We are looking for a few Cosmos teams to be design partners. Tell us your chain, the contracts that matter and how you want to be alerted.</p>
+    </div>
+    <form class="wait__form" action="https://github.com/ThothDivision/chain-security-bot-site/issues/new?template=waitlist.yml" method="get" target="_blank" rel="noopener">
+      <input type="hidden" name="template" value="waitlist.yml">
+      <label for="w-chain">Chain or project <span class="opt">(optional)</span></label>
+      <input id="w-chain" name="title" placeholder="e.g. Osmosis / my-dex contracts" autocomplete="organization">
+      <button class="btn btn--ink" type="submit">Request access via GitHub</button>
+      <p class="fine">Opens a pre-filled issue in our public preview repo. Issues are public, so you can leave the chain blank and we will only see your GitHub handle. A private contact channel is coming soon. No backend, no tracking.</p>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__in mono">
+    <span>Chain Security Bot · early preview · working name</span>
+    <span>No customer logos, no invented stats. Incident sources are linked above.</span>
+    <a href="https://github.com/ThothDivision/chain-security-bot-site">Site source ↗</a>
+  </div>
+</footer>
+<script src="script.js" defer></script>
+</body>
+</html>
